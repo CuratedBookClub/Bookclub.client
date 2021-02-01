@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
+import './Header.styles.scss'
 
 const authenticatedOptions = (
   <Fragment>
@@ -24,7 +25,7 @@ const alwaysOptions = (
 )
 
 const Header = ({ user }) => (
-  <Navbar bg="primary" variant="dark" expand="md">
+  <Navbar className="navBar" variant="dark" expand="md">
     <Navbar.Brand href="#">
       Curated Book Club
     </Navbar.Brand>
