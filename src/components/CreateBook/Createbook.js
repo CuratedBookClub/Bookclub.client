@@ -7,7 +7,6 @@ import S3FileUpload from 'react-s3'
 const CreateBook = ({ user }) => {
   const [book, setBook] = useState({})
   const [postId, setPostId] = useState('')
-  const [image, setImage] = useState('')
   const access = process.env.REACT_APP_ACCESS_KEY
   const secret = process.env.REACT_APP_SECRET_KEY
   const config = {
@@ -30,9 +29,13 @@ const CreateBook = ({ user }) => {
     if (event.target.files[0].type === 'image/jpeg' || event.target.files[0].type === 'image/gif' || event.target.files[0].type === 'image/png') {
       S3FileUpload.uploadFile(event.target.files[0], config)
         .then((data) => {
-          setImage(data.location)
-          return true
-        })
+          setBook((prevPost) => {
+            const updatedPost = { bookImage: data.location }
+            const editedPost = Object.assign({}, prevPost, updatedPost)
+            return editedPost
+          })
+        }
+        )
         .catch((err) => {
           alert(err)
         })
@@ -55,16 +58,14 @@ const CreateBook = ({ user }) => {
       .then(() => setBook({}))
       .then(() => console.log(postId + ' created succesfully'))
   }
-  console.log(image)
+  console.log(book)
   return (
     <div>
-      <form>
-        <label>Book Image:</label>
-        <input type="file" onChange={onFileChange} />
-      </form>
       <form className="createBookContainer" onSubmit={handleSubmit}>
         <label>Title:</label>
         <input name="title" type="text" id="booktitle" className="bookinput" placeholder="Title of the Book" onChange={handleChange}></input>
+        <label>Book Image:</label>
+        <input type="file" onChange={onFileChange} />
         <label>Link:</label>
         <input name="link" type="text" id="booklink" className="bookinput" placeholder="Link to the Book" onChange={handleChange}></input>
         <label>Rating:</label>
