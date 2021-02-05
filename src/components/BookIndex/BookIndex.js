@@ -126,12 +126,12 @@ const BookIndex = ({ user }) => {
       </div>
       <div>
         <Modal show={editShow}>
-          <Modal.Header>Edit</Modal.Header>
+          <Modal.Header>Edit Book</Modal.Header>
           <form className="createBookContainer" onSubmit={handleSubmit}>
             <label>Title:</label>
             <input name="title" type="text" id="booktitle" className="bookinput" value={book.title} onChange={handleChange}></input>
             <label>Book Image:</label>
-            <img src={book.bookImage} />
+            <img className="book-image" src={book.bookImage} />
             <label>Link:</label>
             <input name="link" type="text" id="booklink" className="bookinput" value={book.link} onChange={handleChange}></input>
             <label>Rating:</label>
@@ -139,6 +139,7 @@ const BookIndex = ({ user }) => {
             <label>Review:</label>
             <textarea name="review" type="text" rows={10} className="bookinput" value={book.review} onChange={handleChange}></textarea>
             <button type="submit">Edit Book!</button>
+            <button onClick={() => setEditShow(false)}>Cancel</button>
           </form>
         </Modal>
       </div>

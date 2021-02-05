@@ -10,6 +10,7 @@ import SignOut from './components/SignOut/SignOut'
 import ChangePassword from './components/ChangePassword/ChangePassword'
 import CreateBook from './components/CreateBook/Createbook'
 import BookIndex from './components/BookIndex/BookIndex'
+import Footer from './components/Footer/footer'
 
 class App extends Component {
   constructor (props) {
@@ -70,6 +71,7 @@ class App extends Component {
             <CreateBook msgAlert={this.msgAlert} user={user} />
           )} />
         </main>
+        <Footer />
       </Fragment>
     )
   }
