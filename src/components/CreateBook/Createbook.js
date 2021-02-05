@@ -2,11 +2,20 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import apiUrl from '../../apiConfig'
 import './CreateBook.styles.scss'
+import S3FileUpload from 'react-s3'
 
 const CreateBook = ({ user }) => {
-  console.log(user.token)
   const [book, setBook] = useState({})
   const [postId, setPostId] = useState('')
+  const [image, setImage] = useState('')
+  const access = process.env.REACT_APP_ACCESS_KEY
+  const secret = process.env.REACT_APP_SECRET_KEY
+  const config = {
+    bucketName: 'curatedbookclub',
+    region: 'us-east-2',
+    secretAccessKey: secret,
+    accessKeyId: access
+  }
   const handleChange = (event) => {
     event.persist()
     setBook((prevPost) => {
@@ -14,6 +23,22 @@ const CreateBook = ({ user }) => {
       const editedPost = Object.assign({}, prevPost, updatedPost)
       return editedPost
     })
+  }
+
+  const onFileChange = event => {
+    console.log(event.target.files)
+    if (event.target.files[0].type === 'image/jpeg' || event.target.files[0].type === 'image/gif' || event.target.files[0].type === 'image/png') {
+      S3FileUpload.uploadFile(event.target.files[0], config)
+        .then((data) => {
+          setImage(data.location)
+          return true
+        })
+        .catch((err) => {
+          alert(err)
+        })
+    } else {
+      alert('Please choose an image file')
+    }
   }
 
   const handleSubmit = (event) => {
@@ -30,13 +55,16 @@ const CreateBook = ({ user }) => {
       .then(() => setBook({}))
       .then(() => console.log(postId + ' created succesfully'))
   }
+  console.log(image)
   return (
     <div>
+      <form>
+        <label>Book Image:</label>
+        <input type="file" onChange={onFileChange} />
+      </form>
       <form className="createBookContainer" onSubmit={handleSubmit}>
         <label>Title:</label>
         <input name="title" type="text" id="booktitle" className="bookinput" placeholder="Title of the Book" onChange={handleChange}></input>
-        <label>Book Image:</label>
-        <input name="bookImage" type="text" id="image" className="bookinput" placeholder="Upload the book Image" onChange={handleChange}></input>
         <label>Link:</label>
         <input name="link" type="text" id="booklink" className="bookinput" placeholder="Link to the Book" onChange={handleChange}></input>
         <label>Rating:</label>
