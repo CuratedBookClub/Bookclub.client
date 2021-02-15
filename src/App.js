@@ -11,6 +11,7 @@ import ChangePassword from './components/ChangePassword/ChangePassword'
 import CreateBook from './components/CreateBook/Createbook'
 import BookIndex from './components/BookIndex/BookIndex'
 import Footer from './components/Footer/footer'
+import Home from './components/Home/Home'
 
 class App extends Component {
   constructor (props) {
@@ -54,12 +55,15 @@ class App extends Component {
             deleteAlert={this.deleteAlert}
           />
         ))}
-        <main className="container">
+        <main>
           <Route path='/sign-in' render={() => (
             <SignIn msgAlert={this.msgAlert} setUser={this.setUser} />
           )} />
           <Route path='/book-index' render={() => (
             <BookIndex user={user} />
+          )} />
+          <Route exact path='/' render={() => (
+            <Home user={user} />
           )} />
           <AuthenticatedRoute user={user} path='/sign-out' render={() => (
             <SignOut msgAlert={this.msgAlert} clearUser={this.clearUser} user={user} />

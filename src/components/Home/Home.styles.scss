@@ -1,0 +1,36 @@
+.homeContainer {
+  display: flex;
+  width: 100vw;
+}
+
+.homeLeftPane {
+  width: 50%;
+  background-color: lightsalmon;
+}
+
+.photoContainer {
+  width: 90%;
+  margin: 15px auto;
+  justify-content: center;
+  display: flex;
+}
+
+.blurbContainer {
+  background-color: silver;
+  width: 90%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.homeRightPane {
+  width: 50%;
+  background-color: lightseagreen;
+  padding-top: 25px;
+}
+
+.SamanthaImage {
+  height: 250px;
+  width: auto;
+  margin: 0 auto;
+  border-radius: 50%;
+}

@@ -1,0 +1,24 @@
+.imageSize {
+  height: 100px;
+  width: auto;
+}
+
+.imageContainer {
+  background-color: lightyellow;
+}
+
+.contentContainer {
+  background-color: darkkhaki;
+  display: flex;
+  width: 75%;
+  padding: 15px;
+  margin: 20px auto;
+  height: 130px;
+  border-radius: 10px;
+}
+
+.blurb {
+  background-color: lightskyblue;
+  width: 75%;
+  padding: 10px;
+}
