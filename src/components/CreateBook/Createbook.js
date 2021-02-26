@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import apiUrl from '../../apiConfig'
 import './CreateBook.styles.scss'
-import S3FileUpload from 'react-s3'
+import S3 from 'react-aws-s3'
 
 const CreateBook = ({ user }) => {
   const [book, setBook] = useState({})
@@ -15,6 +15,8 @@ const CreateBook = ({ user }) => {
     secretAccessKey: secret,
     accessKeyId: access
   }
+  const ReactS3Client = new S3(config)
+
   const handleChange = (event) => {
     event.persist()
     setBook((prevPost) => {
@@ -26,22 +28,20 @@ const CreateBook = ({ user }) => {
 
   const onFileChange = event => {
     console.log(event.target.files)
-    if (event.target.files[0].type === 'image/jpeg' || event.target.files[0].type === 'image/gif' || event.target.files[0].type === 'image/png') {
-      S3FileUpload.uploadFile(event.target.files[0], config)
-        .then((data) => {
-          setBook((prevPost) => {
-            const updatedPost = { bookImage: data.location }
-            const editedPost = Object.assign({}, prevPost, updatedPost)
-            return editedPost
-          })
-        }
-        )
-        .catch((err) => {
-          alert(err)
+    const file = event.target.files[0]
+    ReactS3Client
+      .uploadFile(file)
+      .then((data) => {
+        setBook((prevPost) => {
+          const updatedPost = { bookImage: data.location }
+          const editedPost = Object.assign({}, prevPost, updatedPost)
+          return editedPost
         })
-    } else {
-      alert('Please choose an image file')
-    }
+      }
+      )
+      .catch((err) => {
+        alert(err)
+      })
   }
 
   const handleSubmit = (event) => {
@@ -58,7 +58,6 @@ const CreateBook = ({ user }) => {
       .then(() => setBook({}))
       .then(() => console.log(postId + ' created succesfully'))
   }
-  console.log(book)
   return (
     <div>
       <form className="createBookContainer" onSubmit={handleSubmit}>
